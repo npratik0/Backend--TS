@@ -5,4 +5,4 @@ export  const BookSchema = z.object({
     title: z.string().min(1,{message: "Book Title is required"}),
     date: z.string().optional()
 });
-export type Book = z.infer<typeof BookSchema>; // TypeScript type from Zod schema
+export type Book = z.infer<typeof BookSchema>; // TypeScript type from Zod schema 
