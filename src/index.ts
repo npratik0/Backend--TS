@@ -8,6 +8,8 @@ dotenv.config();
 // can use .env variable below this
 console.log(process.env.PORT);
 
+import  authRoutes from './routes/auth.route';
+
 import router from './routes/book.route';
 
 const app: Application= express();
@@ -20,6 +22,7 @@ app.get('/',(req:Request, res: Response) => {
 });
 
 app.use('/api/books',router);
+app.use('/api/auth',authRoutes);
 
 async function startServer() {
     app.listen(PORT, () => {
