@@ -50,6 +50,7 @@ import { PORT } from "./config";
 
 import authRoutes from "./routes/auth.route";
 import bookRoutes from "./routes/book.route";
+import authUserRoutes from "./routes/admin/user.routes";
 
 dotenv.config();
 
@@ -63,6 +64,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/books", bookRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/admin/users/",authUserRoutes);
 
 async function startServer() {
   try {
