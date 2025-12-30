@@ -21,6 +21,23 @@ const userRepository = new UserRepository();
 
 export const authorizedMiddleware = 
     async (req: Request, res: Response, next: NextFunction) => {
+        try{
+             const authHeader = req.headers.authorization;
+            if(!authHeader || !authHeader.startsWith("Bearer "))
+                throw new HttpError(401, "Unauthorized Token Malformed");
+            const token = authHeader.split(" ")[1]; // "Bearer <token>" [1] -> token
+            if(!token) throw new HttpError(401, "Unauthorized Token Missing");
+            const decoded = jwt.verify(token, JWT_SECRET) as Record<string, any>;
+            if(!decoded || !decoded.id) throw new HttpError(401, "Unauthorized Token Invalid");
+            
+            const user = await userRepository.getUserById(decoded.id);
+            if(!user) throw new HttpError(401, "Unauthorized User Not Found");
+            
+            req.user = user; // attach user info to req object
+            return next();
+        }catch(error: Error | any){
+            return res.status(error.statusCode ?? 500).json({success: false, message: error.message ||"Internal Server Error"});
+        }
         // if(req.headers && req.headers.authorization){
         //     return next();
         // }
