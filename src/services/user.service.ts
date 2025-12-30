@@ -1,7 +1,9 @@
 import { CreateUserDTO, LoginUserDTO } from "../dtos/user.dto";
 import { HttpError } from "../errors/http-error";
 import { UserRepository } from "../repositories/user.repository";
-import bcryptjs from "bcryptjs"
+import bcryptjs from "bcryptjs";
+import  jwt  from "jsonwebtoken";
+import { JWT_SECRET } from "../config";
 
 let userRepository = new UserRepository();
 
@@ -37,5 +39,17 @@ export class UserService{
         if(!validPassword){
             throw new HttpError(401, "Invalid Credentials");
         }
+
+        // generate jwt
+        const payload = {// user indentifier
+            id: user._id,
+            email: user.email,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role 
+        }
+        const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '30d'});
+        return {token,user}
     }
 }
