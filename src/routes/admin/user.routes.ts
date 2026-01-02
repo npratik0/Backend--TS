@@ -1,13 +1,13 @@
 import { Router } from "express";
 // import admin controller
 import { AdminUserController } from "../../controllers/admin/user.controller";
-import { authorizedMiddleware } from "../../middlewares/authorized.middleware";
+import { authorizedMiddleware, adminOnlyMiddleware } from "../../middlewares/authorized.middleware";
 
 let adminUserController = new AdminUserController();
 
 const router = Router();
 
-router.get('/:id', authorizedMiddleware,adminUserController.getOneUser);
+router.get('/:id', authorizedMiddleware,adminOnlyMiddleware,adminUserController.getOneUser);
 // define admin user routes
 
 export default router;
