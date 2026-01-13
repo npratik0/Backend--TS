@@ -45,8 +45,8 @@ export class UserService{
             id: user._id,
             email: user.email,
             username: user.username,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            fullName: user.fullName,
+            phoneNumber: user.phoneNumber,
             role: user.role 
         }
         const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '30d'});
